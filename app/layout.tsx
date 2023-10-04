@@ -1,9 +1,10 @@
 import React from 'react';
 import { ClerkProvider } from '@clerk/nextjs';
-import { Inter, Space_Grotesk } from 'next/font/google';
+import { Inter, Space_Grotesk as FontSpaceGrotesk } from 'next/font/google';
 import type { Metadata } from 'next';
 
 import './global.css';
+import { ThemeProvider } from '@/context/ThemeProvider';
 
 export const metadata: Metadata = {
   title: 'Overflow',
@@ -17,7 +18,7 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
-const SpaceGrotesk = Space_Grotesk({
+const SpaceGrotesk = FontSpaceGrotesk({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-spaceGrotesk',
@@ -29,19 +30,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider
-      appearance={{
-        elements: {
-          formButtonPrimary: 'primary-gradient',
-          footerActionLink: 'primary-text-gradient hover:text-primary-500',
-        },
-      }}
-    >
-      <html lang="en">
-        <body className={`${inter.variable} ${SpaceGrotesk.variable}`}>
-          {children}
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body className={`${inter.variable} ${SpaceGrotesk.variable}`}>
+        <ClerkProvider
+          appearance={{
+            elements: {
+              formButtonPrimary: 'primary-gradient',
+              footerActionLink: 'primary-text-gradient hover:text-primary-500',
+            },
+          }}
+        >
+          <ThemeProvider>{children}</ThemeProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }
